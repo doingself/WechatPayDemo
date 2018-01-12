@@ -10,61 +10,120 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var textView: UITextView!
+    private var txtField: UITextField!
+    private var txtView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         var y: CGFloat = 80
-        let pay = getBtn(title: "支付", frame: CGRect(x: 20, y: y, width: 100, height: 35))
-        pay.addTarget(self, action: #selector(self.payAction(sender:)), for: UIControlEvents.touchUpInside)
+        var x: CGFloat = 20
+        txtField = UITextField(frame: CGRect(x: x, y: y, width: self.view.bounds.size.width-40, height: 35))
+        txtField.placeholder = "输入服务器地址"
+        txtField.borderStyle = .roundedRect
+        txtField.text = "http://192.168.1.106:8080/"
+        self.view.addSubview(txtField)
         
         y += 35 + 20
-        let query = getBtn(title: "查询", frame: CGRect(x: 20, y: y, width: 100, height: 35))
+        let pay = getBtn(title: "支付", frame: CGRect(x: x, y: y, width: 100, height: 35))
+        pay.addTarget(self, action: #selector(self.payAction(sender:)), for: UIControlEvents.touchUpInside)
+        x += 100 + 30
+        let query = getBtn(title: "查询", frame: CGRect(x: x, y: y, width: 100, height: 35))
         query.addTarget(self, action: #selector(self.queryAction(sender:)), for: UIControlEvents.touchUpInside)
         
         y += 35 + 20
-        let refund = getBtn(title: "退款", frame: CGRect(x: 20, y: y, width: 100, height: 35))
+        x = 20
+        let refund = getBtn(title: "退款", frame: CGRect(x: x, y: y, width: 100, height: 35))
         refund.addTarget(self, action: #selector(self.refundAction(sender:)), for: UIControlEvents.touchUpInside)
-        
+        x += 100 + 30
+        let refundQuery = getBtn(title: "退款查询", frame: CGRect(x: x, y: y, width: 100, height: 35))
+        refundQuery.addTarget(self, action: #selector(self.refundQuery(sender:)), for: UIControlEvents.touchUpInside)
         
         y += 35 + 20
-        textView = UITextView(frame: CGRect(x: 20, y: y, width: self.view.bounds.size.width-40, height: self.view.bounds.height-y-20))
-        textView.layer.borderWidth = 1
-        textView.delegate = self
-        self.view.addSubview(textView)
+        txtView = UITextView(frame: CGRect(x: 20, y: y, width: self.view.bounds.size.width-40, height: self.view.bounds.height-y-20))
+        txtView.layer.borderWidth = 1
+        txtView.delegate = self
+        self.view.addSubview(txtView)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        textView.resignFirstResponder()
+        txtField.resignFirstResponder()
+        txtView.resignFirstResponder()
     }
     
     // MARK: action
     @objc func payAction(sender: Any?){
-        let path = "http://192.168.1.106:8080/pay?total=1"
+        guard let server = self.txtField.text else{ return }
+        let orderNo = "test2018" + String(arc4random())
+        self.txtView.text = orderNo
+        let path = server + "pay?total=1&orderNo=" + orderNo
         sessionDataTaskRequestResume(path: path) { (dict: [String: Any]) in
-            //调起微信支付
-            let req = PayReq()
-            req.partnerId = dict["partnerid"] as! String
-            req.prepayId  = dict["prepayid"] as! String
-            req.nonceStr  = dict["noncestr"] as! String
-            req.timeStamp = dict["timestamp"] as! UInt32
-            req.package   = dict["package"] as! String
-            req.sign      = dict["sign"] as! String
-            DispatchQueue.main.async(execute: {
-                WXApi.send(req)
-            })
+            if let sign = dict["sign"] as? String{
+                //调起微信支付
+                let req = PayReq()
+                req.partnerId = dict["partnerid"] as! String
+                req.prepayId  = dict["prepayid"] as! String
+                req.nonceStr  = dict["noncestr"] as! String
+                req.timeStamp = dict["timestamp"] as! UInt32
+                req.package   = dict["package"] as! String
+                req.sign      = sign
+                DispatchQueue.main.async(execute: {
+                    WXApi.send(req)
+                })
+            }else{
+                let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+                let str = String(data: data, encoding: String.Encoding.utf8)
+                DispatchQueue.main.async(execute: {
+                    self.txtView.text = str
+                })
+            }
         }
     }
     @objc func queryAction(sender: Any?){
-        
+        guard let server = self.txtField.text else{ return }
+        guard let no = txtView.text else{
+            return
+        }
+        let path = server + "query?no=" + no
+        sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
+            let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let str = String(data: data, encoding: String.Encoding.utf8)
+            DispatchQueue.main.async(execute: {
+                self.txtView.text = str
+            })
+        }
     }
     @objc func refundAction(sender: Any?){
-        
+        guard let server = self.txtField.text else{ return }
+        guard let no = txtView.text else{
+            return
+        }
+        let path = server + "refund?no=" + no
+        sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
+            let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let str = String(data: data, encoding: String.Encoding.utf8)
+            DispatchQueue.main.async {
+                self.txtView.text = str
+            }
+        }
+    }
+    @objc func refundQuery(sender: Any?){
+        guard let server = self.txtField.text else{ return }
+        guard let no = txtView.text else{
+            return
+        }
+        let path = server + "refundQuery?no=" + no
+        sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
+            let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let str = String(data: data, encoding: String.Encoding.utf8)
+            DispatchQueue.main.async(execute: {
+                self.txtView.text = str
+            })
+        }
     }
     
     // MARK: private func
@@ -72,7 +131,7 @@ class ViewController: UIViewController {
         let btn = UIButton(frame: frame)
         btn.layer.borderWidth = 1
         btn.layer.masksToBounds = true
-        btn.layer.cornerRadius = 10
+        btn.layer.cornerRadius = 4
         btn.setTitle(title, for: UIControlState.normal)
         btn.setTitleColor(UIColor.black, for: UIControlState.normal)
         btn.setTitleColor(UIColor.lightGray, for: UIControlState.highlighted)
@@ -108,17 +167,26 @@ class ViewController: UIViewController {
             //解析json
             //参数options：.MutableContainers(json最外层是数组或者字典选这个选项)
             if data != nil && data?.isEmpty == false{
-                let any = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
-                guard let dict = any as? [String: Any] else{
-                    return
+                do{
+                    let any = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                    guard let dict = any as? [String: Any] else{
+                        return
+                    }
+                    print(dict)
+                    
+                    completed(dict)
+                } catch {
+                    let str: String = String(data: data!, encoding: String.Encoding.utf8)!
+                    DispatchQueue.main.async(execute: {
+                        self.txtView.text = " 请求失败 -> " + path + str
+                    })
                 }
-                print(dict)
-                
-                completed(dict)
             }
             else{
                 print("请求数据失败")
-                self.textView.text = "请求失败 -> " + path
+                DispatchQueue.main.async(execute: {
+                    self.txtView.text = "请求失败 -> " + path
+                })
             }
         }
         //5.开始执行任务

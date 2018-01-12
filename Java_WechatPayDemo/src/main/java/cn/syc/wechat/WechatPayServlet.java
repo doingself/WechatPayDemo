@@ -70,7 +70,7 @@ public class WechatPayServlet extends HttpServlet {
             }
 
             if (isSuc){
-                // 统一下单成功
+                // 统一下单成功 返回 支付交易会话标识id prepay_id
 
                 String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
                 // 再次签名，用于调起客户端
@@ -109,6 +109,7 @@ public class WechatPayServlet extends HttpServlet {
                 json.append(resp.get("return_code"));
                 json.append("\"}");
 
+                System.out.println(resp);
                 System.out.println(json.toString());
             }
         } catch (Exception e) {

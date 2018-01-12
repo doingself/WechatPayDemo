@@ -2,10 +2,7 @@ package cn.syc.wechat;
 
 import com.github.wxpay.sdk.WXPayConfig;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.security.cert.CertPath;
 
 public class WechatConfig implements WXPayConfig{
@@ -24,14 +21,21 @@ public class WechatConfig implements WXPayConfig{
      * @param certPath
      * @throws Exception
      */
-    public WechatConfig(String certPath) throws Exception {
+    public WechatConfig(String certPath) {
         //String certPath = "/path/to/apiclient_cert.p12";
         File file = new File(certPath);
 
-        InputStream certStream = new FileInputStream(file);
-        this.certData = new byte[(int) file.length()];
-        certStream.read(this.certData);
-        certStream.close();
+        InputStream certStream = null;
+        try {
+            certStream = new FileInputStream(file);
+            this.certData = new byte[(int) file.length()];
+            certStream.read(this.certData);
+            certStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getAppID() {

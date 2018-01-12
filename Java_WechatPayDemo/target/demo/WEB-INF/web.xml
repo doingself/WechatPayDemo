@@ -12,4 +12,49 @@
     <servlet-name>WechatPayServlet</servlet-name>
     <url-pattern>/pay</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>WechatNotificateServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.WechatNotificateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatNotificateServlet</servlet-name>
+    <url-pattern>/notificate</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>WechatQueryServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.WechatQueryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatQueryServlet</servlet-name>
+    <url-pattern>/query</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>WechatRefundServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.WechatRefundServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatRefundServlet</servlet-name>
+    <url-pattern>/refund</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>WechatRefundNotificateServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.WechatRefundNotificateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatRefundNotificateServlet</servlet-name>
+    <url-pattern>/refundNotificate</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>WechatRefundQueryServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.WechatRefundQueryServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatRefundQueryServlet</servlet-name>
+    <url-pattern>/refundQuery</url-pattern>
+  </servlet-mapping>
 </web-app>
