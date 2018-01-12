@@ -23,7 +23,7 @@ public class WechatRefundServlet extends HttpServlet {
 
         String orderNo = request.getParameter("no");
         // 一笔退款失败后重新提交，请不要更换退款单号，请使用原商户退款单号。
-        String orderRefundNo = "test123refund123order123no";
+        String orderRefundNo = "testRefundNo" + System.currentTimeMillis();
         String totalFee = "1";
         String refundFee = "1";
 

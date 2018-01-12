@@ -60,7 +60,7 @@ class ViewController: UIViewController {
         guard let server = self.txtField.text else{ return }
         let orderNo = "test2018" + String(arc4random())
         self.txtView.text = orderNo
-        let path = server + "pay?total=1&orderNo=" + orderNo
+        let path = server + "pay?no=" + orderNo
         sessionDataTaskRequestResume(path: path) { (dict: [String: Any]) in
             if let sign = dict["sign"] as? String{
                 //调起微信支付
