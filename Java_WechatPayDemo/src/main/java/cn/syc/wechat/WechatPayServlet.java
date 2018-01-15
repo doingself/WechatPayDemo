@@ -21,7 +21,6 @@ public class WechatPayServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String orderNo = request.getParameter("no");
 
         WechatConfig config = new WechatConfig();
         WXPay wxPay = new WXPay(config);
@@ -44,7 +43,7 @@ public class WechatPayServlet extends HttpServlet {
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", "这是一次付款测试");
         // 服务器订单号，唯一
-        data.put("out_trade_no", orderNo);
+        data.put("out_trade_no", "orderNo" + System.currentTimeMillis());
         data.put("total_fee", "1");
         // 手机客户端ip
         data.put("spbill_create_ip", "127.0.0.1");
@@ -78,8 +77,6 @@ public class WechatPayServlet extends HttpServlet {
                 signMap.put("prepayid",resp.get("prepay_id"));
                 signMap.put("timestamp",timestamp);
 
-                System.out.println(signMap);
-                System.out.println(config.getKey());
                 String newSign = WXPayUtil.generateSignature(signMap,config.getKey());
 
                 // FIXME: 可以封装为Map 并转换 Json，此次封装为json String

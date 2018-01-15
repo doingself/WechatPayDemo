@@ -10,7 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var txtField: UITextField!
+    private var txtFieldIp: UITextField!
+    private var txtFieldNo: UITextField!
     private var txtView: UITextView!
     
     override func viewDidLoad() {
@@ -19,11 +20,11 @@ class ViewController: UIViewController {
         
         var y: CGFloat = 80
         var x: CGFloat = 20
-        txtField = UITextField(frame: CGRect(x: x, y: y, width: self.view.bounds.size.width-40, height: 35))
-        txtField.placeholder = "输入服务器地址"
-        txtField.borderStyle = .roundedRect
-        txtField.text = "http://192.168.1.106:8080/"
-        self.view.addSubview(txtField)
+        txtFieldIp = UITextField(frame: CGRect(x: x, y: y, width: self.view.bounds.size.width-40, height: 35))
+        txtFieldIp.placeholder = "输入服务器地址"
+        txtFieldIp.borderStyle = .roundedRect
+        txtFieldIp.text = "http://192.168.1.106:8080/"
+        self.view.addSubview(txtFieldIp)
         
         y += 35 + 20
         let pay = getBtn(title: "支付", frame: CGRect(x: x, y: y, width: 100, height: 35))
@@ -40,10 +41,18 @@ class ViewController: UIViewController {
         let refundQuery = getBtn(title: "退款查询", frame: CGRect(x: x, y: y, width: 100, height: 35))
         refundQuery.addTarget(self, action: #selector(self.refundQuery(sender:)), for: UIControlEvents.touchUpInside)
         
+        x = 20
+        y += 35 + 20
+        txtFieldNo = UITextField(frame: CGRect(x: x, y: y, width: self.view.bounds.size.width-40, height: 35))
+        txtFieldNo.placeholder = "业务系统订单号"
+        txtFieldNo.borderStyle = .roundedRect
+        self.view.addSubview(txtFieldNo)
+        
         y += 35 + 20
         txtView = UITextView(frame: CGRect(x: 20, y: y, width: self.view.bounds.size.width-40, height: self.view.bounds.height-y-20))
         txtView.layer.borderWidth = 1
         txtView.delegate = self
+        txtView.isEditable = false
         self.view.addSubview(txtView)
     }
     override func didReceiveMemoryWarning() {
@@ -51,15 +60,17 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        txtField.resignFirstResponder()
+        txtFieldIp.resignFirstResponder()
+        txtFieldNo.resignFirstResponder()
         txtView.resignFirstResponder()
     }
     
     // MARK: action
     @objc func payAction(sender: Any?){
-        guard let server = self.txtField.text else{ return }
-        let orderNo = "test2018" + String(arc4random())
-        self.txtView.text = orderNo
+        guard let server = self.txtFieldIp.text else{ return }
+        let orderNo = "orderNo" + String(arc4random())
+        self.txtFieldNo.text = orderNo
+        self.appendTxt(str: "创建订单: " + orderNo)
         let path = server + "pay?no=" + orderNo
         sessionDataTaskRequestResume(path: path) { (dict: [String: Any]) in
             if let sign = dict["sign"] as? String{
@@ -77,52 +88,50 @@ class ViewController: UIViewController {
             }else{
                 let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
                 let str = String(data: data, encoding: String.Encoding.utf8)
-                DispatchQueue.main.async(execute: {
-                    self.txtView.text = str
-                })
+                self.appendTxt(str: "创建订单失败: " + str!)
             }
         }
     }
     @objc func queryAction(sender: Any?){
-        guard let server = self.txtField.text else{ return }
-        guard let no = txtView.text else{
+        // ip
+        guard let server = self.txtFieldIp.text else{ return }
+        // order no
+        guard let no = txtFieldNo.text else{
             return
         }
         let path = server + "query?no=" + no
         sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
             let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
             let str = String(data: data, encoding: String.Encoding.utf8)
-            DispatchQueue.main.async(execute: {
-                self.txtView.text = str
-            })
+            self.appendTxt(str: "订单查询: " + str!)
         }
     }
     @objc func refundAction(sender: Any?){
-        guard let server = self.txtField.text else{ return }
-        guard let no = txtView.text else{
+        // ip
+        guard let server = self.txtFieldIp.text else{ return }
+        // order no
+        guard let no = txtFieldNo.text else{
             return
         }
         let path = server + "refund?no=" + no
         sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
             let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
             let str = String(data: data, encoding: String.Encoding.utf8)
-            DispatchQueue.main.async {
-                self.txtView.text = str
-            }
+            self.appendTxt(str: "退款: " + str!)
         }
     }
     @objc func refundQuery(sender: Any?){
-        guard let server = self.txtField.text else{ return }
-        guard let no = txtView.text else{
+        // ip
+        guard let server = self.txtFieldIp.text else{ return }
+        // order no
+        guard let no = txtFieldNo.text else{
             return
         }
         let path = server + "refundQuery?no=" + no
         sessionDataTaskRequestResume(path: path) { (dict:[String: Any]) in
             let data = try! JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
             let str = String(data: data, encoding: String.Encoding.utf8)
-            DispatchQueue.main.async(execute: {
-                self.txtView.text = str
-            })
+            self.appendTxt(str: "退款查询: " + str!)
         }
     }
     
@@ -137,6 +146,16 @@ class ViewController: UIViewController {
         btn.setTitleColor(UIColor.lightGray, for: UIControlState.highlighted)
         self.view.addSubview(btn)
         return btn
+    }
+    private func appendTxt(str: String){
+        // 消息追加到 text view
+        DispatchQueue.main.async(execute: {
+            if let old = self.txtView.text{
+                self.txtView.text = old + "\n" + str
+            }else{
+                self.txtView.text = str
+            }
+        })
     }
     
     private func sessionDataTaskRequestResume(path: String, completed: @escaping (_ dict: [String:Any])->Void){
@@ -177,16 +196,12 @@ class ViewController: UIViewController {
                     completed(dict)
                 } catch {
                     let str: String = String(data: data!, encoding: String.Encoding.utf8)!
-                    DispatchQueue.main.async(execute: {
-                        self.txtView.text = " 请求失败 -> " + path + str
-                    })
+                    self.appendTxt(str: "请求失败 -> " + path + str)
                 }
             }
             else{
                 print("请求数据失败")
-                DispatchQueue.main.async(execute: {
-                    self.txtView.text = "请求失败 -> " + path
-                })
+                self.appendTxt(str: "请求失败 -> " + path)
             }
         }
         //5.开始执行任务
