@@ -1,5 +1,6 @@
-package cn.syc.wechat;
+package cn.syc.wechat.App;
 
+import cn.syc.wechat.WechatConfig;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConfig;
 import com.github.wxpay.sdk.WXPayUtil;
@@ -24,6 +25,7 @@ public class WechatNotificateServlet extends HttpServlet {
 
         // 参考 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_7&index=3
 
+        String resultStr;
         // 支付结果通知的xml格式数据
         String inputLine;
         StringBuilder notityXml = new StringBuilder();
@@ -39,6 +41,7 @@ public class WechatNotificateServlet extends HttpServlet {
             request.getReader().close();
         } catch (Exception e) {
             e.printStackTrace();
+            resultStr = e.getMessage();
         }
 
         WechatConfig config = new WechatConfig();
@@ -59,17 +62,20 @@ public class WechatNotificateServlet extends HttpServlet {
                 Map<String, String > result = new HashMap<String, String>();
                 result.put("return_code","SUCCESS");
                 result.put("return_msg","OK");
-                String resultStr = WXPayUtil.mapToXml(result);
-                PrintWriter out = response.getWriter();
-                out.print(resultStr);
-                out.flush();
-                out.close();
+                resultStr = WXPayUtil.mapToXml(result);
             }
             else {
                 // 签名错误，如果数据里没有sign字段，也认为是签名错误
+                resultStr = "签名错误";
             }
         }catch (Exception ex){
             ex.printStackTrace();
+            resultStr = ex.getMessage();
         }
+
+        PrintWriter out = response.getWriter();
+        out.print(resultStr);
+        out.flush();
+        out.close();
     }
 }

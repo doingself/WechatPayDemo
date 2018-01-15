@@ -6,7 +6,7 @@
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>WechatPayServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatPayServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatPayServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatPayServlet</servlet-name>
@@ -15,7 +15,7 @@
 
   <servlet>
     <servlet-name>WechatNotificateServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatNotificateServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatNotificateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatNotificateServlet</servlet-name>
@@ -24,7 +24,7 @@
   
   <servlet>
     <servlet-name>WechatQueryServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatQueryServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatQueryServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatQueryServlet</servlet-name>
@@ -33,7 +33,7 @@
   
   <servlet>
     <servlet-name>WechatRefundServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatRefundServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatRefundServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatRefundServlet</servlet-name>
@@ -42,7 +42,7 @@
   
   <servlet>
     <servlet-name>WechatRefundNotificateServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatRefundNotificateServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatRefundNotificateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatRefundNotificateServlet</servlet-name>
@@ -51,7 +51,7 @@
 
   <servlet>
     <servlet-name>WechatRefundQueryServlet</servlet-name>
-    <servlet-class>cn.syc.wechat.WechatRefundQueryServlet</servlet-class>
+    <servlet-class>cn.syc.wechat.App.WechatRefundQueryServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>WechatRefundQueryServlet</servlet-name>

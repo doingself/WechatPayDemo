@@ -1,5 +1,6 @@
-package cn.syc.wechat;
+package cn.syc.wechat.App;
 
+import cn.syc.wechat.WechatConfig;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
 
@@ -21,6 +22,9 @@ public class WechatRefundNotificateServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 参考 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_16&index=10
+
+        String resultStr = new String();
+
  /*
 开通该功能需要在商户平台-交易中心-退款配置中配置notify_url。
 如果链接无法访问，商户将无法接收到微信通知。
@@ -41,6 +45,8 @@ public class WechatRefundNotificateServlet extends HttpServlet {
             request.getReader().close();
         } catch (Exception e) {
             e.printStackTrace();
+
+            resultStr = e.getMessage();
         }
 
         WechatConfig config = new WechatConfig();
@@ -61,17 +67,19 @@ public class WechatRefundNotificateServlet extends HttpServlet {
                 Map<String, String > result = new HashMap<String, String>();
                 result.put("return_code","SUCCESS");
                 result.put("return_msg","OK");
-                String resultStr = WXPayUtil.mapToXml(result);
-                PrintWriter out = response.getWriter();
-                out.print(resultStr);
-                out.flush();
-                out.close();
+                resultStr = WXPayUtil.mapToXml(result);
             }
             else {
                 // 签名错误，如果数据里没有sign字段，也认为是签名错误
             }
         }catch (Exception ex){
             ex.printStackTrace();
+            resultStr = ex.getMessage();
         }
+
+        PrintWriter out = response.getWriter();
+        out.print(resultStr);
+        out.flush();
+        out.close();
     }
 }

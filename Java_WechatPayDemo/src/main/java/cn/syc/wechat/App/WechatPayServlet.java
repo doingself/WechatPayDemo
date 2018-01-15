@@ -1,5 +1,6 @@
-package cn.syc.wechat;
+package cn.syc.wechat.App;
 
+import cn.syc.wechat.WechatConfig;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
 
@@ -21,6 +22,7 @@ public class WechatPayServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String orderNo = request.getParameter("no");
 
         WechatConfig config = new WechatConfig();
         WXPay wxPay = new WXPay(config);
@@ -43,7 +45,7 @@ public class WechatPayServlet extends HttpServlet {
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", "这是一次付款测试");
         // 服务器订单号，唯一
-        data.put("out_trade_no", "orderNo" + System.currentTimeMillis());
+        data.put("out_trade_no", orderNo);
         data.put("total_fee", "1");
         // 手机客户端ip
         data.put("spbill_create_ip", "127.0.0.1");
@@ -79,7 +81,7 @@ public class WechatPayServlet extends HttpServlet {
 
                 String newSign = WXPayUtil.generateSignature(signMap,config.getKey());
 
-                // FIXME: 可以封装为Map 并转换 Json，此次封装为json String
+                // FIXME: 可以封装为Map 并转换 Json，此处封装为json String
                 json.append("{\"appid\":\"");
                 json.append(resp.get("appid"));
                 json.append("\",\"noncestr\":\"");
@@ -110,6 +112,9 @@ public class WechatPayServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            // 统一下单失败
+            json.append(e.getMessage());
         }
 
         PrintWriter out = response.getWriter();

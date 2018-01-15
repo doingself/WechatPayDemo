@@ -1,5 +1,6 @@
-package cn.syc.wechat;
+package cn.syc.wechat.App;
 
+import cn.syc.wechat.WechatConfig;
 import com.github.wxpay.sdk.WXPay;
 
 import javax.servlet.ServletException;
