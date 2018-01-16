@@ -28,7 +28,7 @@ public class WechatQueryServlet extends HttpServlet {
 
         String orderNo = request.getParameter("no");
 
-        WechatConfig config = new WechatConfig();
+        WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
 
         /*

@@ -45,7 +45,7 @@ public class WechatNotificateServlet extends HttpServlet {
             resultStr = e.getMessage();
         }
 
-        WechatConfig config = new WechatConfig();
+        WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
 
         try {

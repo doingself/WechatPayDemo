@@ -32,7 +32,7 @@ public class WechatRefundServlet extends HttpServlet {
         String totalFee = "1";
         String refundFee = "1";
 
-        WechatConfig config = new WechatConfig("cer file");
+        WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
 
         /*

@@ -87,7 +87,7 @@ https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_l
 
         // 统一下单
 
-        WechatConfig config = new WechatConfig();
+        WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
 
         Boolean isSuc = false;

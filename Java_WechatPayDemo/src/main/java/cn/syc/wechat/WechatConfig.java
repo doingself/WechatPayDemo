@@ -9,20 +9,25 @@ public class WechatConfig implements WXPayConfig{
 
     private byte[] certData;
 
-    /**
-     * 付款不需要证书
-     */
-    public WechatConfig(){
+    private static WechatConfig instance;
 
+    public static WechatConfig getInstance() {
+        if (instance == null){
+            synchronized (WechatConfig.class){
+                if (instance == null){
+                    instance = new WechatConfig();
+                }
+            }
+        }
+        return instance;
     }
 
     /**
      * 退款使用证书
-     * @param certPath
-     * @throws Exception
      */
-    public WechatConfig(String certPath) {
-        //String certPath = "/path/to/apiclient_cert.p12";
+    private WechatConfig(){
+        // FIXME: 读取证书, 保存在 byte 中
+        String certPath = this.getClass().getResource("cer.txt").getPath();
         File file = new File(certPath);
 
         InputStream certStream = null;
