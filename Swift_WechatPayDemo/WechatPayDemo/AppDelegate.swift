@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,WXApiDelegate {
     var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        WXApi.registerApp("你的appId")
+        WXApi.registerApp("AppID")
         return true
     }
     func onReq(_ req: BaseReq!) {
