@@ -57,4 +57,14 @@
     <servlet-name>WechatRefundQueryServlet</servlet-name>
     <url-pattern>/refundQuery</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>WechatQRCodeServlet</servlet-name>
+    <servlet-class>cn.syc.wechat.QRCode.WechatQRCodeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WechatQRCodeServlet</servlet-name>
+    <url-pattern>/qrcode</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

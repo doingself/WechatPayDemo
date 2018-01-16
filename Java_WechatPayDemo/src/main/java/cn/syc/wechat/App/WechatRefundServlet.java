@@ -21,6 +21,10 @@ public class WechatRefundServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         String orderNo = request.getParameter("no");
         // 一笔退款失败后重新提交，请不要更换退款单号，请使用原商户退款单号。

@@ -43,8 +43,49 @@ demo 中都是 servlet get 请求
 + 退款 http://localhost:8080/refund?no=orderNo123
 + 退款通知 http://localhost:8080/refundNotificate (**无法测试, 需要外网支持** )
 + 退款查询 http://localhost:8080/refundQuery?no=orderNo123
++ 创建二维码 http://localhost:8080/qrcode
 
-## IOS 客户的
+## PC Web 端
+
+使用微信扫描web 端生成的二维码进行付款
+
+```
+  <!-- google zxing 二维码-->
+  <dependency>
+    <groupId>com.google.zxing</groupId>
+    <artifactId>core</artifactId>
+    <version>3.0.0</version>
+  </dependency>
+  <dependency>
+    <groupId>com.google.zxing</groupId>
+    <artifactId>javase</artifactId>
+    <version>3.0.0</version>
+  </dependency>
+```
+
+使用 servlet 显示创建的二维码
+```
+ServletOutputStream stream = response.getOutputStream();
+int size = 200;
+String format = "png";
+
+// 创建二维码
+Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+hints.put(EncodeHintType.MARGIN, 2);
+try {
+    BitMatrix bitMatrix = new MultiFormatWriter().encode(codeUrl, BarcodeFormat.QR_CODE, size, size,hints);
+    MatrixToImageWriter.writeToStream(bitMatrix, format, stream);
+} catch (WriterException e) {
+    e.printStackTrace();
+    stream.print(e.getMessage());
+}
+stream.flush();
+stream.close();
+```
+
+## IOS 客户端
 
 配置 URL Type
 

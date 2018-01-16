@@ -23,16 +23,17 @@ public class WechatNotificateServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
         // 参考 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_7&index=3
 
         String resultStr;
         // 支付结果通知的xml格式数据
         String inputLine;
         StringBuilder notityXml = new StringBuilder();
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         //微信给返回的东西
         try {
             while ((inputLine = request.getReader().readLine()) != null) {

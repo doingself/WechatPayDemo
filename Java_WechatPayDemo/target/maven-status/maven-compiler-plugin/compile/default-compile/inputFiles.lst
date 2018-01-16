@@ -3,5 +3,6 @@
 /Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/App/WechatPayServlet.java
 /Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/App/WechatQueryServlet.java
 /Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/App/WechatRefundQueryServlet.java
+/Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/QRCode/WechatQRCodeServlet.java
 /Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/App/WechatRefundNotificateServlet.java
 /Users/syc/Documents/GitHub/WechatPayDemo/Java_WechatPayDemo/src/main/java/cn/syc/wechat/WechatConfig.java

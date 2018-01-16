@@ -21,6 +21,12 @@ public class WechatRefundNotificateServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
         // 参考 https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_16&index=10
 
         String resultStr = new String();
