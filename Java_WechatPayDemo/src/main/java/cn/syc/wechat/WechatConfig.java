@@ -27,7 +27,7 @@ public class WechatConfig implements WXPayConfig{
      */
     private WechatConfig(){
         // FIXME: 读取证书, 保存在 byte 中
-        String certPath = this.getClass().getResource("cer.txt").getPath();
+        String certPath = this.getClass().getClassLoader().getResource("cer.txt").getPath();
         File file = new File(certPath);
 
         InputStream certStream = null;

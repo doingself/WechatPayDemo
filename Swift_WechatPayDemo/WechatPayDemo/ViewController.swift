@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         txtFieldIp = UITextField(frame: CGRect(x: x, y: y, width: self.view.bounds.size.width-40, height: 35))
         txtFieldIp.placeholder = "输入服务器地址"
         txtFieldIp.borderStyle = .roundedRect
-        txtFieldIp.text = "http://192.168.1.106:8080/"
+        txtFieldIp.text = "http://192.168.3.101:8080/"
         self.view.addSubview(txtFieldIp)
         
         y += 35 + 20
