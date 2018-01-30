@@ -27,7 +27,6 @@ public class WechatPayServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
-        String orderNo = request.getParameter("no");
 
         WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
@@ -36,6 +35,7 @@ public class WechatPayServlet extends HttpServlet {
         StringBuffer json = new StringBuffer();
         String RETURN_CODE = "return_code";
 
+        // TODO: 根据参数, 创建未付款的订单
 
         /*
 商品描述	body	是	String(128)	腾讯充值中心-QQ会员充值商品描述交易字段格式根据不同的应用场景按照以下格式：APP——需传入应用市场上的APP名字-实际商品名称，天天爱消除-游戏充值。
@@ -46,15 +46,16 @@ public class WechatPayServlet extends HttpServlet {
 通知地址	notify_url	是	String(256)	http://www.weixin.qq.com/wxpay/pay.php	接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 交易类型	trade_type	是	String(16)	APP	支付类型
 */
-        // 在服务器创建订单后，封装微信统一下单参数
+        // FIXME: 在服务器创建订单后，封装微信统一下单参数
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", "这是一次付款测试");
         // 服务器订单号，唯一
+        String orderNo = request.getParameter("no");
         data.put("out_trade_no", orderNo);
         data.put("total_fee", "1");
         // 手机客户端ip
         data.put("spbill_create_ip", "127.0.0.1");
-        // 付款成功后，通知服务器地址
+        // 付款成功后，通知服务器地址 重要 重要 重要 重要
         data.put("notify_url", "http://www.example.com/wxpay/notify");
         data.put("trade_type", "APP");
 

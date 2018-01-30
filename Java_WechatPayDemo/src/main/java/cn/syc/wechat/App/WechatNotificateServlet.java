@@ -56,8 +56,7 @@ public class WechatNotificateServlet extends HttpServlet {
             if (wxPay.isPayResultNotifySignatureValid(notifyMap)) {
                 // 签名正确
 
-                //订单金额校验
-                //业务处理
+                // TODO: 订单金额校验 业务处理
 
                 // 所有校验通过,业务处理完成,通知微信
                 Map<String, String > result = new HashMap<String, String>();

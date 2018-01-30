@@ -26,6 +26,7 @@ public class WechatRefundQueryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
+        // 根据系统订单号查询
         String orderNo = request.getParameter("no");
 
         WechatConfig config = WechatConfig.getInstance();
@@ -52,6 +53,9 @@ public class WechatRefundQueryServlet extends HttpServlet {
             // 接口链接：https://api.mch.weixin.qq.com/pay/refundquery
             // 该方法同时会 添加 appid、mch_id、nonce_str、sign_type、sign
             Map<String, String> resp = wxPay.refundQuery(data);
+
+            // TODO: 查询结果处理
+
             System.out.println(resp);
 
             out.print(resp);

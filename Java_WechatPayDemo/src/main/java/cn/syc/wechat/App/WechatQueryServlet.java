@@ -26,6 +26,7 @@ public class WechatQueryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
+        // 通过系统订单号查询订单
         String orderNo = request.getParameter("no");
 
         WechatConfig config = WechatConfig.getInstance();
@@ -49,6 +50,9 @@ public class WechatQueryServlet extends HttpServlet {
             // https://api.mch.weixin.qq.com/pay/orderquery
             // 该方法同时会 添加 appid、mch_id、nonce_str、sign_type、sign
             Map<String, String> resp = wxPay.orderQuery(data);
+
+            // TODO: 解析订单信息并展示
+
             System.out.println(resp);
 
             out.print(resp);

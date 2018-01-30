@@ -26,7 +26,11 @@ public class WechatRefundServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
+        // 系统订单号
         String orderNo = request.getParameter("no");
+
+        // TODO: 该订单号是否存在退款记录
+
         // 一笔退款失败后重新提交，请不要更换退款单号，请使用原商户退款单号。
         String orderRefundNo = "testRefundNo" + System.currentTimeMillis();
         String totalFee = "1";
@@ -72,6 +76,8 @@ public class WechatRefundServlet extends HttpServlet {
                     isSuc = true;
                 }
             }
+
+            // TODO: 退款结果处理
 
             if (isSuc){
                 // 退款申请 提交成功

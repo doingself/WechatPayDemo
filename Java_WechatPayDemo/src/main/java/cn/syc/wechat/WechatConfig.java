@@ -43,19 +43,31 @@ public class WechatConfig implements WXPayConfig{
         }
     }
 
+    /*
+     * // 商户号
+     * String mch_id = "1344462901";
+     * String appid = "wxdc8d57db2a0da07c";
+     * // 微信支付需要用到的密钥
+     * String appsecret = "446c4b3017662240518c69c8444f2fab";
+     * // 微信支付需要用到的partnerkey
+     * String partnerkey = "rigourtechrigourmedia13161046875";
+     * */
     public String getAppID() {
         // appId
-        return "wx**************";
+        //return "wx**************";
+        return "wxdc8d57db2a0da07c";
     }
 
     public String getMchID() {
         // 商户号
-        return "11111111111";
+        //return "11111111111";
+        return "1344462901";
     }
 
     public String getKey() {
         // 微信支付需要用到的partnerkey
-        return "asdfasdfasdfasdfasdf";
+        //return "asdfasdfasdfasdfasdf";
+        return "rigourtechrigourmedia13161046875";
     }
 
     public InputStream getCertStream() {

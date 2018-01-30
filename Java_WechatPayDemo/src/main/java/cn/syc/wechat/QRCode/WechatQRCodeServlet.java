@@ -81,11 +81,9 @@ https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_l
 //        response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
 
-        //1. 创建订单
+        // TODO: 创建订单
         String orderNo = "orderNo" + System.currentTimeMillis();
         String productId = "123";
-
-        // 统一下单
 
         WechatConfig config = WechatConfig.getInstance();
         WXPay wxPay = new WXPay(config);
@@ -110,7 +108,7 @@ JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下
 商品ID	product_id	否	String(32)	12235413214070356458058	trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义。
 
 */
-        // 在服务器创建订单后，封装微信统一下单参数
+        // FIXME: 在服务器创建订单后，封装微信统一下单参数
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", "这是一次付款测试");
         // 服务器订单号，唯一
@@ -136,7 +134,7 @@ JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下
 预支付交易会话标识	prepay_id	是	String(64)	wx201410272009395522657a690389285100	微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
 二维码链接	code_url	否	String(64)	URl：weixin：//wxpay/s/An4baqw	trade_type为NATIVE时有返回，用于生成二维码，展示给用户进行扫码支付
 */
-            // 校验下单是否成功，后续需要再次签名
+            // 校验下单是否成功
             if ("SUCCESS".equals(resp.get(RETURN_CODE)) && "SUCCESS".equals(resp.get(RESULT_CODE))){
                 isSuc = true;
                 if (resp.containsKey("code_url")) {
