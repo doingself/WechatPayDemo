@@ -13,6 +13,7 @@
 .mtj.tmp/
 
 Java_WechatPayDemo/target/*
+Swift_WechatPayDemo/WechatPayDemo/WechatSDK1.8.2/*
 
 # Package Files #
 *.jar
